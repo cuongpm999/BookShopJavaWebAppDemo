@@ -1,0 +1,18 @@
+.container-form{
+	width: 500px;
+	margin: auto;
+}
+
+h1{
+    margin-bottom: 30px;
+}
+
+.container-form .container-link{
+	display: flex;
+	justify-content: space-between;
+}
+
+label{
+	font-size: 20px;
+	font-weight: 600;
+}

@@ -1,0 +1,43 @@
+.thanh-toan{
+    background-color: white;
+    padding: 15px;
+}
+
+.thanh-toan .btn-thanh-toan{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 100%;
+}
+
+table.list-sp td.san-pham img{
+    width: 110px;
+    height: 156px;
+}
+
+table.list-sp td.san-pham{
+    display: flex;
+    width: 400px;
+}
+
+table.list-sp td.san-pham a{
+    text-decoration: none;
+    color: black;
+}
+
+.thanh-toan h5{
+	font-size: 22px;
+    font-weight: 600;
+}
+
+.thanh-toan label.vc{
+	font-size: 22px;
+    font-weight: 600;
+}
+
+.thanh-toan table td.thanh-tien{
+    text-align: right;
+    font-size: 20px;
+    font-weight: 700;
+    color: red;
+}
