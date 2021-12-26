@@ -1,5 +1,6 @@
 package dao.orderdao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,20 +9,23 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Iterator;
 
-import dao.DAO;
+import dao.ConnectionPool;
 import model.order.BoughtBookItem;
 import model.order.Cart;
 import model.order.Order;
 
-public class OrderDAOImpl extends DAO implements OrderDAO{
+public class OrderDAOImpl implements OrderDAO{
 	public OrderDAOImpl() {
-		super();
+	
 	}
 
 	@Override
 	public boolean insertOrder(Order order) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection connection = pool.getConnection();
+		
 		boolean isSuccess=true;
-		String sqlOrder = "INSERT INTO bookshop.order (customerId,paymentId,cartId,shipmentId) VALUES (?,?,?,?)";
+		String sqlOrder = "INSERT INTO heroku_d4dcf97ba8d2e58.order (customerId,paymentId,cartId,shipmentId) VALUES (?,?,?,?)";
 		String sqlPayment = "INSERT INTO payment (paymentType,allMoney) VALUES (?,?)";
 		String sqlCart = "INSERT INTO cart (dateCreate) VALUES (?)";
 		String sqlBoughtBook = "INSERT INTO boughtbookitem (amount,cartId,bookItemId) VALUES (?,?,?)";
@@ -80,6 +84,7 @@ public class OrderDAOImpl extends DAO implements OrderDAO{
 		} finally {
 			try {
 				connection.setAutoCommit(true);
+				pool.freeConnection(connection);
 			} catch (SQLException e) {
 				isSuccess=false;
 				e.printStackTrace();

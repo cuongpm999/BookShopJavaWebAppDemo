@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context path="/BookShop">
+	<Resource name="jdbc/murach" auth="Container" maxActive="100"
+		maxIdle="30" maxWaitMillis="10000" username="b264eb5681a98f" password="c8906492"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://us-cdbr-east-04.cleardb.com/heroku_d4dcf97ba8d2e58?autoReconnect=true"
+		logAbandoned="true" removeAbandoned="true" removeAbandonedTimeout="60"
+		type="javax.sql.DataSource" />
+</Context>

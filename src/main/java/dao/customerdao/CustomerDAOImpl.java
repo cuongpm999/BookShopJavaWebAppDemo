@@ -1,5 +1,6 @@
 package dao.customerdao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,18 +8,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.DAO;
+import dao.ConnectionPool;
 import model.customer.Account;
 import model.customer.Address;
 import model.customer.Customer;
 
-public class CustomerDAOImpl extends DAO implements CustomerDAO{
+public class CustomerDAOImpl implements CustomerDAO{
 	public CustomerDAOImpl() {
-		super();
+		
 	}
 
 	@Override
 	public boolean insertCustomer(Customer customer) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection connection = pool.getConnection();
+		
 		boolean isSuccess=true;
 		String sqlCustomer = "INSERT INTO customer (fullName,mobile,addressId,accountId) VALUES (?,?,?,?)";
 		String sqlAccount = "INSERT INTO account (username,password,role) VALUES (?,?,?)";
@@ -63,6 +67,7 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 		} finally {
 			try {
 				connection.setAutoCommit(true);
+				pool.freeConnection(connection);
 			} catch (SQLException e) {
 				isSuccess=false;
 				e.printStackTrace();
@@ -74,6 +79,8 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 
 	@Override
 	public Customer getCustomer(String username, String password) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection connection = pool.getConnection();
 		Customer customer = null;
 		String sql = "SELECT customer.*,address.*,account.* FROM customer,address,account WHERE addressId=address.id AND accountId=account.id AND username=? AND password=?";
 		try {
@@ -101,8 +108,11 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 				customer.setAddress(address);
 				
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(connection);
 		}
 		return customer;
 
@@ -110,6 +120,8 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 
 	@Override
 	public List<Customer> findAll() {
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection connection = pool.getConnection();
 		List<Customer> list = new ArrayList<>();
 		String sql = "SELECT customer.*,address.*,account.* FROM customer,address,account WHERE addressId=address.id AND accountId=account.id";
 		try {
@@ -136,8 +148,11 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 				
 				list.add(customer);
 			}
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(connection);
 		}
 
 		return list;
@@ -145,6 +160,8 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 
 	@Override
 	public Customer findCustomerByUsername(String username) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection connection = pool.getConnection();
 		Customer customer = new Customer();
 		String sql = "SELECT customer.*,address.*,account.* FROM customer,address,account WHERE addressId=address.id AND accountId=account.id AND username=?";
 		try {
@@ -170,8 +187,11 @@ public class CustomerDAOImpl extends DAO implements CustomerDAO{
 				customer.setAddress(address);
 				
 			}
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(connection);
 		}
 		return customer;
 	}
