@@ -12,3 +12,4 @@ Demo web bán sách, gồm các chức năng cơ bản của một web bán sác
 - MySQL
 - ConnectionPool
 - JDBC
+- DAO
